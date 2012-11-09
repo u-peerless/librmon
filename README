@@ -1,0 +1,28 @@
+This is a library for RMON.
+As it is library, there are a lot of callback functions have been used, which
+need to be initialized in the application code.
+
+In this library, I have used below callbacks, so when porting please initialize them properly.
+    1. void *(* rmon_alloc_memory)(int);
+    2. void (* rmon_free_memory)(int, void *);
+    3. void (* rmon_timer_create)(int, int, rmon_timer_cb, void *);
+    4. void (* rmon_timer_delete)(int);
+    5. int (* rmon_get_sys_uptime)();
+    6. void (* do_rmon_trace)(int, int, char *, ...);
+ 
+In my APP, I did initialized as below:
+
+    rmon_alloc_memory = fn_rmon_alloc_memory;
+    rmon_free_memory  = fn_rmon_free_memory;
+
+    rmon_timer_create = fn_rmon_timer_create;
+    rmon_timer_delete = fn_rmon_timer_delete;
+
+    rmon_get_sys_uptime = fn_rmon_get_sys_uptime;
+    do_rmon_trace = fn_do_rmon_trace;
+
+Some definitions can be found in rmon_disp.c, fill up with your own handler. 
+This file must be part of your main RMON Application.
+
+Hope this clarifies.
+
